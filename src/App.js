@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Header from "./components/header/Header";
+import Sidebar from "./components/sidebar/Sidebar";
+import { useState } from "react";
+
+import Login from "./pages/Login";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	return (
+		<div className="App h-screen">
+			{/* <Header
+				menuStatus={isMenuOpen}
+				setMenu={setIsMenuOpen}
+			/>
+			<Sidebar menuStatus={isMenuOpen} />
+			<section className="w-full h-[90%] bg-blue-100"></section> */}
+			<Login />
+		</div>
+	);
 }
 
 export default App;

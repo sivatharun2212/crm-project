@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+const Login = () => {
+	const navigate = useNavigate();
+	const [userName, setUserName] = useState("");
+	const [password, setPassword] = useState("");
 
-const login = () => {
+	let name = "siva22";
+	let pass = "123";
+	const handleLogin = () => {
+		console.log("clic");
+		if (userName === name && password === pass) {
+			navigate("/home");
+		} else {
+			alert("invalid");
+		}
+	};
 	return (
 		<div className="bg-[#e7f2ff] flex justify-center items-center w-screen h-screen">
 			<div className="bg-[#65c8ff] w-[34%] h-[70%] fixed rounded-full -left-48 -top-52"></div>
@@ -11,7 +25,9 @@ const login = () => {
 				<div className="w-full flex items-center mt-12 flex-col gap-4">
 					<input
 						className="bg-[#ededed] pl-4 h-12 rounded-full w-[80%]"
+						onChange={(e) => setUserName(e.target.value)}
 						type="email"
+						value={userName}
 						placeholder="Username"
 						name=""
 						id=""
@@ -19,11 +35,15 @@ const login = () => {
 					<input
 						className="bg-[#ededed] h-12 pl-4 rounded-full w-[80%]"
 						type="password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
 						placeholder="Password"
 						name=""
 						id=""
 					/>
-					<button className="bg-[#216ce7] h-12 text-white w-[80%] rounded-full">
+					<button
+						onClick={handleLogin}
+						className="bg-[#216ce7] h-12 text-white w-[80%] rounded-full">
 						Sign In
 					</button>
 				</div>
@@ -32,4 +52,4 @@ const login = () => {
 	);
 };
 
-export default login;
+export default Login;

@@ -134,13 +134,6 @@ const Sidebar = ({ menuStatus }) => {
 					</ul>
 				</div>
 			)}
-			<div
-				className={`cursor-pointer  px-6 py-2  flex items-center justify-between
-				`}>
-				<span className="text-stone-800 text-sm  font-medium capitalize">
-					Users
-				</span>
-			</div>
 		</aside>
 	);
 };

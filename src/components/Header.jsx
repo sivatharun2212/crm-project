@@ -1,9 +1,9 @@
 import React from "react";
-import menuIcon from "../../assets/menuIcon.png";
-const Header = ({ menuStatus, setMenu }) => {
+import menuIcon from "../assets/menuIcon.png";
+
+const Header = ({ menuStatus, toggleMenu }) => {
 	const handleMenu = () => {
-		console.log("he");
-		setMenu(!menuStatus);
+		toggleMenu(!menuStatus);
 	};
 	return (
 		<header className="w-full h-[8%] flex justify-between items-center px-6 shadow-lg bg-white">

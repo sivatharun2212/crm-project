@@ -1,9 +1,8 @@
 import "./App.css";
-// import Header from "./components/header/Header";
-// import Sidebar from "./components/sidebar/Sidebar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Leads from "./pages/Leads";
 
 function App() {
 	return (
@@ -16,6 +15,10 @@ function App() {
 				<Route
 					path="/home"
 					element={<Home />}
+				/>
+				<Route
+					path="/leads"
+					element={<Leads />}
 				/>
 			</Routes>
 		</Router>

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import homeIcon from "../../assets/home.png";
-import settingsIcon from "../../assets/settings.png";
-import downarrowIcon from "../../assets/down.png";
-import accountIcon from "../../assets/lock.png";
-import createIcon from "../../assets/add.png";
-import leadsIcon from "../../assets/leads.png";
+import homeIcon from "../assets/home.png";
+import settingsIcon from "../assets/settings.png";
+import downarrowIcon from "../assets/down.png";
+import accountIcon from "../assets/lock.png";
+import createIcon from "../assets/add.png";
+import leadsIcon from "../assets/leads.png";
 const Sidebar = ({ menuStatus }) => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [createOpen, setCreateOpen] = useState(false);

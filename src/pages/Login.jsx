@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const Login = () => {
 	const navigate = useNavigate();
 	const [userName, setUserName] = useState("");
 	const [password, setPassword] = useState("");
 
-	let name = "siva22";
-	let pass = "123";
-	const handleLogin = () => {
-		console.log("clic");
-		if (userName === name && password === pass) {
+	const handleLogin = async () => {
+		try {
+			const loginReq = { mobileNbr: userName, password: password };
+			const response = await axios.post(
+				"http://localhost:8090/crm/auth/login",
+				loginReq
+			);
+			console.log(response.data);
 			navigate("/home");
-		} else {
-			alert("invalid");
+		} catch (error) {
+			console.error("Error fetching data:", error?.response?.data?.response);
+			alert(error?.response?.data?.response);
 		}
 	};
+
 	return (
 		<div className="bg-[#e7f2ff] flex justify-center items-center w-screen h-screen">
 			<div className="bg-[#65c8ff] w-[34%] h-[70%] fixed rounded-full -left-48 -top-52"></div>

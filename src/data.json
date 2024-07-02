@@ -1,0 +1,84 @@
+{
+	"customersData": [
+		{
+			"name": "Mr. Anusha",
+			"source": "Collected Data",
+			"since": "10-Oct-23",
+			"POC": "Syed Fayaz",
+			"lastTalk": "12-Oct-23",
+			"next": "Tomorrow(11:00AM)"
+		},
+		{
+			"name": "Mr. Swapana",
+			"source": "Collected Data",
+			"since": "10-Oct-23",
+			"POC": "Syed Fayaz",
+			"lastTalk": "12-Oct-23",
+			"next": "13-Oct-23"
+		},
+		{
+			"name": "Mr. Hasan",
+			"source": "Collected Data",
+			"since": "04-Oct-23",
+			"POC": "Syed Fayaz",
+			"lastTalk": "04-Oct-23",
+			"next": "05-Oct-23"
+		},
+		{
+			"name": "Mr. PARAMESH",
+			"source": "Collected Data",
+			"since": "04-Oct-23",
+			"POC": "Syed Fayaz",
+			"lastTalk": "04-Oct-23",
+			"next": "05-Oct-23"
+		},
+		{
+			"name": "Mr. Raju",
+			"source": "-",
+			"since": "03-Oct-23",
+			"POC": "Hemelatha V",
+			"lastTalk": "09-Oct-23",
+			"next": "Today(11:00AM)"
+		},
+		{
+			"name": "Mr. Ravi Chandra",
+			"source": "-",
+			"since": "03-Oct-23",
+			"POC": "Hemelatha V",
+			"lastTalk": "09-Oct-23",
+			"next": "--"
+		},
+		{
+			"name": "Mr. Mohan",
+			"source": "-",
+			"since": "03-Oct-23",
+			"POC": "Hemelatha V",
+			"lastTalk": "09-Oct-23",
+			"next": "--"
+		},
+		{
+			"name": "Mr. Maheswari",
+			"source": "Collected Data",
+			"since": "03-Oct-23",
+			"POC": "Syed Fayaz",
+			"lastTalk": "03-Oct-23",
+			"next": "01-Nov-23"
+		},
+		{
+			"name": "Mr. Jothi",
+			"source": "Collected Data",
+			"since": "03-Oct-23",
+			"POC": "Syed Fayaz",
+			"lastTalk": "-",
+			"next": "--"
+		},
+		{
+			"name": "Mr. Raja sai kumar",
+			"source": "-",
+			"since": "27-sep-23",
+			"POC": "Hemelatha V",
+			"lastTalk": "11-Oct-23",
+			"next": "--"
+		}
+	]
+}

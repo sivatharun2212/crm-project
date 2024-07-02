@@ -5,7 +5,9 @@ import downarrowIcon from "../assets/down.png";
 import accountIcon from "../assets/lock.png";
 import createIcon from "../assets/add.png";
 import leadsIcon from "../assets/leads.png";
+import { useNavigate } from "react-router-dom";
 const Sidebar = ({ menuStatus }) => {
+	const navigate = useNavigate();
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [createOpen, setCreateOpen] = useState(false);
 	const [accountOpen, setAccountOpen] = useState(false);
@@ -14,7 +16,9 @@ const Sidebar = ({ menuStatus }) => {
 			className={`${
 				menuStatus ? "flex" : "hidden"
 			} w-40 h-[90%] bg-white flex flex-col gap-2 absolute left-0`}>
-			<div className="flex items-center mt-4 px-6 py-2  gap-4">
+			<div
+				onClick={() => navigate("/home")}
+				className="flex cursor-pointer items-center mt-4 px-6 py-2  gap-4">
 				<img
 					className="w-4 h-4"
 					src={homeIcon}
@@ -22,7 +26,9 @@ const Sidebar = ({ menuStatus }) => {
 				/>
 				<span className="text-stone-800 text-sm font-medium capitalize">home</span>
 			</div>
-			<div className="flex items-center px-6 py-2  gap-4">
+			<div
+				onClick={() => navigate("/leads")}
+				className="flex cursor-pointer  items-center px-6 py-2  gap-4">
 				<img
 					className="w-4 h-4"
 					src={leadsIcon}

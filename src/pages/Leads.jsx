@@ -1,13 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeaderSidebar from "../components/HeaderSidebar";
-import data from "../data.json";
 import AddLeadModel from "../components/AddLeadModel";
+import axios from "axios";
+
 const Leads = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [recordsPerPage, setRecordsPerPage] = useState(5);
 	const [showAddLeadModel, setShowAddLeadModel] = useState(false);
+	const [leadsData, setLaedsData] = useState([]);
 
-	const totalPages = Math.ceil(data.customersData.length / recordsPerPage);
+	// const totalPages = Math.ceil(data.customersData.length / recordsPerPage);
+
+	const handleImportFileChange = (event) => {
+		const file = event.target.files[0];
+		console.log("selected file", file);
+	};
+	const handleCloseModel = () => {
+		setShowAddLeadModel(false);
+	};
+
+	useEffect(() => {
+		const handleLogin = async () => {
+			try {
+				const searchLeads = {
+					page: 0,
+					size: 20,
+					sortBy: "firstName",
+					sortType: "asc",
+					userId: null,
+					statusId: null,
+					source: null,
+					search: null,
+					fromDate: null,
+					toDate: null,
+				};
+				const response = await axios.post(
+					"http://3.111.147.169:8090/crm/lead/searchLeads",
+					searchLeads
+				);
+				setLaedsData(response.data.response.content);
+				console.log(response.data.response.content);
+			} catch (error) {
+				console.error("Error fetching data:", error?.response?.data?.response);
+				alert(error?.response?.data?.response);
+			}
+		};
+		handleLogin();
+	}, []);
 	return (
 		<div className="h-screen w-screen">
 			<HeaderSidebar />
@@ -15,11 +54,19 @@ const Leads = () => {
 				<div className="py-4 flex justify-between">
 					<h1 className="font-bold text-2xl">Leads</h1>
 					<div className="flex gap-12">
-						<span className="bg-[#216ce7] px-2 flex justify-center items-center rounded-md text-white ">
+						<label
+							htmlFor="import"
+							className="bg-[#216ce7] cursor-pointer px-2 flex justify-center items-center rounded-md text-white ">
 							Import
-						</span>
+						</label>
+						<input
+							onChange={handleImportFileChange}
+							type="file"
+							id="import"
+							className="hidden"
+						/>
 						<span
-							onClick={setShowAddLeadModel}
+							onClick={() => setShowAddLeadModel(true)}
 							className="bg-[#216ce7] px-2 flex justify-center items-center rounded-md cursor-pointer text-white ">
 							Add lead
 						</span>
@@ -51,82 +98,82 @@ const Leads = () => {
 					/>
 				</div>
 				<div className="rounded-lg overflow-hidden overflow-y-scroll h-[60%]">
-					<table class="w-full text-sm text-left rtl:text-right  text-stone-800 ">
-						<thead class="text-xs text-gray-700 capitalize bg-white">
+					<table className="w-full text-sm text-left rtl:text-right  text-stone-800 ">
+						<thead className="text-xs text-gray-700 capitalize bg-white">
 							<tr>
 								<th
 									scope="col"
-									class="px-6 py-3">
+									className="px-6 py-3">
 									Customers
 								</th>
 								<th
 									scope="col"
-									class="px-6 py-3">
+									className="px-6 py-3">
 									Source
 								</th>
 								<th
 									scope="col"
-									class="px-6 py-3">
+									className="px-6 py-3">
 									Since
 								</th>
 								<th
 									scope="col"
-									class="px-6 py-3">
+									className="px-6 py-3">
 									POC
 								</th>
 								<th
 									scope="col"
-									class="px-6 py-3">
+									className="px-6 py-3">
 									Last talk
 								</th>
 								<th
 									scope="col"
-									class="px-6 py-3">
+									className="px-6 py-3">
 									Next
 								</th>
 							</tr>
 						</thead>
 						<tbody>
-							{data.customersData.map((customer) => {
+							{leadsData.map((lead) => {
 								return (
-									<>
-										<tr class="bg-gray-200 border-b  hover:bg-gray-50">
-											<td
-												scope="row"
-												class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-												<div className="customer-heading">
-													<input
-														type="checkbox"
-														name=""
-														id=""
-													/>
-													{/* <img
+									<tr
+										key={lead?.firstName}
+										className="bg-gray-200 border-b  hover:bg-gray-50">
+										<td
+											scope="row"
+											className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+											<div className="customer-heading">
+												<input
+													type="checkbox"
+													name=""
+													id=""
+												/>
+												{/* <img
 											class="table-star"
 											src={starImg}
 											alt=""
 										/> */}
-													<span>
-														{customer.name}
-													</span>
-												</div>
-											</td>
-											<td class="px-6 py-4">
-												{customer.source}
-											</td>
-											<td class="px-6 py-4">
-												{customer.since}
-											</td>
-											<td class="px-6 py-4">
-												{customer.POC}
-											</td>
-											<td class="px-6 py-4">
-												{customer.lastTalk}
-											</td>
-											<td class="px-6 py-4">
-												{customer.next}
-											</td>
-										</tr>
-									</>
+												<span>
+													{lead?.firstName}
+												</span>
+											</div>
+										</td>
+										<td className="px-6 py-4">
+											{lead.source}
+										</td>
+										<td className="px-6 py-4">
+											{lead.mobileNbr}
+										</td>
+										<td className="px-6 py-4">
+											{lead.user?.firstName}
+										</td>
+										<td className="px-6 py-4">
+											{lead.lastTalk}
+										</td>
+										<td className="px-6 py-4">
+											{lead.next}
+										</td>
+									</tr>
 								);
 							})}
 						</tbody>
@@ -140,7 +187,7 @@ const Leads = () => {
 						)
 						.map((page) => {})}
 				</section> */}
-				{showAddLeadModel && <AddLeadModel />}
+				{showAddLeadModel && <AddLeadModel closeModel={handleCloseModel} />}
 			</section>
 		</div>
 	);

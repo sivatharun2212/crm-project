@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import HeaderSidebar from "../components/HeaderSidebar";
 import AddLeadModel from "../components/AddLeadModel";
 import axios from "axios";
+import EditLeadModel from "../components/EditLeadModel";
 
 const Leads = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [recordsPerPage, setRecordsPerPage] = useState(5);
 	const [showAddLeadModel, setShowAddLeadModel] = useState(false);
+	const [showEditLeadModel, setShowEditLeadModel] = useState(false);
 	const [leadsData, setLaedsData] = useState([]);
+	const [editLeadData, setEditLeadData] = useState(null);
 
 	// const totalPages = Math.ceil(data.customersData.length / recordsPerPage);
 
@@ -16,7 +19,13 @@ const Leads = () => {
 		console.log("selected file", file);
 	};
 	const handleCloseModel = () => {
+		setShowEditLeadModel(false);
 		setShowAddLeadModel(false);
+	};
+
+	const handleEditLead = (lead) => {
+		setShowEditLeadModel(true);
+		setEditLeadData(lead);
 	};
 
 	useEffect(() => {
@@ -153,7 +162,13 @@ const Leads = () => {
 											src={starImg}
 											alt=""
 										/> */}
-												<span>
+												<span
+													className="cursor-pointer"
+													onClick={() =>
+														handleEditLead(
+															lead
+														)
+													}>
 													{lead?.firstName}
 												</span>
 											</div>
@@ -188,6 +203,12 @@ const Leads = () => {
 						.map((page) => {})}
 				</section> */}
 				{showAddLeadModel && <AddLeadModel closeModel={handleCloseModel} />}
+				{showEditLeadModel && (
+					<EditLeadModel
+						leadData={editLeadData}
+						closeModel={handleCloseModel}
+					/>
+				)}
 			</section>
 		</div>
 	);

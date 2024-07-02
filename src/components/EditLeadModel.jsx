@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 
-const AddLeadModel = ({ closeModel }) => {
-	const [leadData, setLeadData] = useState({
-		firstName: "",
-		lastName: "",
-		email: "",
-		mobile: "",
-		course: "",
-		state: "",
-		city: "",
-		executive: "",
+const AddLeadModel = ({ leadData, closeModel }) => {
+	console.log("lll", leadData);
+	const [newLeadData, setNewLeadData] = useState({
+		firstName: leadData.firstName,
+		lastName: leadData.lastName,
+		email: leadData.email,
+		mobile: leadData.mobile,
+		course: leadData.course,
+		state: leadData.state,
+		city: leadData.city,
+		// executive: leadData.ex,
 	});
 	const handleChange = (e) => {
 		const { id, value } = e.target;
-		setLeadData((prevData) => ({
+		setNewLeadData((prevData) => ({
 			...prevData,
 			[id]: value,
 		}));
-		console.log("lead data : ", leadData);
+		console.log("chaedValues", newLeadData);
 	};
 
 	return (
@@ -34,7 +35,7 @@ const AddLeadModel = ({ closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="firstName"
 							type="text"
-							value={leadData.firstName}
+							value={newLeadData.firstName}
 							onChange={handleChange}
 							placeholder="first name"
 						/>
@@ -50,7 +51,7 @@ const AddLeadModel = ({ closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="email"
 							type="Email"
-							value={leadData.email}
+							value={newLeadData.email}
 							onChange={handleChange}
 							placeholder="yourmail@gmail.com"
 						/>
@@ -66,7 +67,7 @@ const AddLeadModel = ({ closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="course"
 							type="text"
-							value={leadData.course}
+							value={newLeadData.course}
 							onChange={handleChange}
 							placeholder="course"
 						/>
@@ -81,7 +82,7 @@ const AddLeadModel = ({ closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="city"
 							type="text"
-							value={leadData.city}
+							value={newLeadData.city}
 							onChange={handleChange}
 							placeholder="city"
 						/>
@@ -103,7 +104,7 @@ const AddLeadModel = ({ closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="lastName"
 							type="text"
-							value={leadData.lastName}
+							value={newLeadData.lastName}
 							onChange={handleChange}
 							placeholder="Last Name"
 						/>
@@ -119,7 +120,7 @@ const AddLeadModel = ({ closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="mobile"
 							type="number"
-							value={leadData.mobile}
+							value={newLeadData.mobile}
 							onChange={handleChange}
 							placeholder="mobile number"
 						/>
@@ -134,7 +135,7 @@ const AddLeadModel = ({ closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="state"
 							type="text"
-							value={leadData.state}
+							value={newLeadData.state}
 							onChange={handleChange}
 							placeholder="State"
 						/>

@@ -14,9 +14,22 @@ const Leads = () => {
 
 	// const totalPages = Math.ceil(data.customersData.length / recordsPerPage);
 
-	const handleImportFileChange = (event) => {
+	const handleImportFileChange = async (event) => {
 		const file = event.target.files[0];
-		console.log("selected file", file);
+		const formData = new FormData();
+		formData.append('file', file);
+		try {
+		const response = await axios.post(
+			"http://localhost:8090/crm/lead/bulkUpload", formData, {
+				headers: {
+				  'Content-Type': 'multipart/form-data',
+				},
+			  });
+			  alert("Uploaded successfully");
+			} catch (error) {
+				alert(error?.response?.data?.response);
+			}
+
 	};
 	const handleCloseModel = () => {
 		setShowEditLeadModel(false);
@@ -44,11 +57,10 @@ const Leads = () => {
 					toDate: null,
 				};
 				const response = await axios.post(
-					"http://3.111.147.169:8090/crm/lead/searchLeads",
+					"http://localhost:8090/crm/lead/searchLeads",
 					searchLeads
 				);
 				setLaedsData(response.data.response.content);
-				console.log(response.data.response.content);
 			} catch (error) {
 				console.error("Error fetching data:", error?.response?.data?.response);
 				alert(error?.response?.data?.response);
@@ -56,6 +68,7 @@ const Leads = () => {
 		};
 		handleLogin();
 	}, []);
+
 	return (
 		<div className="h-screen w-screen">
 			<HeaderSidebar />

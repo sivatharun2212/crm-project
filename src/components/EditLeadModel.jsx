@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const AddLeadModel = ({ leadData, closeModel }) => {
 	console.log("lll", leadData);
@@ -6,8 +7,8 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 		firstName: leadData.firstName,
 		lastName: leadData.lastName,
 		email: leadData.email,
-		mobile: leadData.mobile,
-		course: leadData.course,
+		mobileNbr: leadData.mobileNbr,
+		course: leadData.enquiredCourse,
 		state: leadData.state,
 		city: leadData.city,
 		// executive: leadData.ex,
@@ -18,6 +19,21 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 			...prevData,
 			[id]: value,
 		}));
+	};
+
+	const handleSave = async () => {
+		try {
+			console.log("lead data : ", leadData);
+			const response = await axios.post(
+				"http://localhost:8090/crm/lead/createLead",
+				leadData
+			);
+			console.log(response.data);
+			alert("Lead updated successfully")
+		} catch (error) {
+			console.error("Error fetching data:", error?.response?.data?.response);
+			alert(error?.response?.data?.response);
+		}
 	};
 
 	return (
@@ -119,7 +135,7 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="mobile"
 							type="number"
-							value={newLeadData.mobile}
+							value={newLeadData.mobileNbr}
 							onChange={handleChange}
 							placeholder="mobile number"
 						/>
@@ -132,11 +148,11 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 						</label>
 						<input
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
-							id="state"
+							id="city"
 							type="text"
-							value={newLeadData.state}
+							value={newLeadData.city}
 							onChange={handleChange}
-							placeholder="State"
+							placeholder="City"
 						/>
 					</div>
 					<div className=" w-full flex justify-between">
@@ -154,9 +170,10 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 						</select>
 					</div>
 				</div>
-				<div className="bg-[#216ce7] absolute right-12 px-4 rounded-sm text-white font-semibold cursor-pointer hover:bg-blue-500 bottom-6">
-					Save
-				</div>
+				<button	onClick={handleSave}
+				className="bg-[#216ce7] absolute right-12 px-4 rounded-sm text-white font-semibold cursor-pointer hover:bg-blue-500 bottom-6">
+				Save
+			    </button>
 			</div>
 		</div>
 	);

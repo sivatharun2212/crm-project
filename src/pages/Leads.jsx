@@ -11,6 +11,7 @@ const Leads = () => {
 	const [showEditLeadModel, setShowEditLeadModel] = useState(false);
 	const [leadsData, setLaedsData] = useState([]);
 	const [editLeadData, setEditLeadData] = useState(null);
+	const [userDate, setUserData] = useState([]);
 
 	// const totalPages = Math.ceil(data.customersData.length / recordsPerPage);
 
@@ -41,8 +42,21 @@ const Leads = () => {
 		setEditLeadData(lead);
 	};
 
+	useEffect( () => {
+		const getUsers = async () => {
+			try {
+				const response = await axios.get("http://localhost:8090/crm/user/getAllUsers");
+				setUserData(response.data.response);
+			} catch (error) {
+				console.error("Error fetching data:", error?.response?.data?.response);
+				alert(error?.response?.data?.response);
+			}
+		};
+		getUsers();
+	}, []);
+
 	useEffect(() => {
-		const handleLogin = async () => {
+		const handleSearchLead = async () => {
 			try {
 				const searchLeads = {
 					page: 0,
@@ -66,7 +80,7 @@ const Leads = () => {
 				alert(error?.response?.data?.response);
 			}
 		};
-		handleLogin();
+		handleSearchLead();
 	}, []);
 
 	return (
@@ -108,10 +122,9 @@ const Leads = () => {
 					</select>
 					<select className="w-40 outline-none  rounded-md">
 						<option value="">Select Executive</option>
-						<option value="1">Unassigned</option>
-						<option value="2">Bhupesh</option>
-						<option value="3">Hemalatha</option>
-						<option value="4">Kaushik</option>
+						{userDate.map((data) => (
+                        <option key={data.userId}>{data.firstName}</option>
+                    ))}
 					</select>
 					<input
 						type="text"
@@ -127,6 +140,16 @@ const Leads = () => {
 									scope="col"
 									className="px-6 py-3">
 									Customers
+								</th>
+								<th
+									scope="col"
+									className="px-6 py-3">
+									Mobile Nbr
+								</th>
+								<th
+									scope="col"
+									className="px-6 py-3">
+									Email
 								</th>
 								<th
 									scope="col"
@@ -185,6 +208,12 @@ const Leads = () => {
 													{lead?.firstName}
 												</span>
 											</div>
+										</td>
+										<td className="px-6 py-4">
+											{lead?.mobileNbr}
+										</td>
+										<td className="px-6 py-4">
+											{lead?.email}
 										</td>
 										<td className="px-6 py-4">
 											{lead.source}

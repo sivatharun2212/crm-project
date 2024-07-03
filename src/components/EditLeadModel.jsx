@@ -1,33 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const AddLeadModel = ({ leadData, closeModel }) => {
-	console.log("lll", leadData);
-	const [newLeadData, setNewLeadData] = useState({
-		firstName: leadData.firstName,
-		lastName: leadData.lastName,
-		email: leadData.email,
-		mobileNbr: leadData.mobileNbr,
-		course: leadData.enquiredCourse,
-		college: leadData.state,
-		city: leadData.city,
-		// executive: leadData.ex,
-	});
-	const handleChange = (e) => {
-		const { id, value } = e.target;
-		setNewLeadData((prevData) => ({
-			...prevData,
-			[id]: value,
-		}));
-		console.log("new lead data => ", newLeadData);
-	};
+const EditLeadModel = ({ leadData, closeModel }) => {
+	const [firstName, setFirstName] = useState(leadData.firstName);
+	const [lastName, setLastName] = useState(leadData.lastName);
+	const [mobileNbr, setMobileNbr] = useState(leadData.mobileNbr);
+	const [email, setEmail] = useState(leadData.email);
+	const [course, setCourse] = useState(leadData.course);
+	const [source, setSource] = useState(leadData.source);
+	// const [college, setCollege] = useEffect(leadData.college);
+	const [branch, setBranch] = useState(leadData.branch);
+	const [yearOfPassing, setYearOfPassing] = useState(leadData.yearOfPassing);
+	const [city, setCity] = useState(leadData.city);
+	const [userId, setUserId] = useState(leadData.user?.userId);
 
+	const [userData, setUserData] = useState([]);
+	console.log("useradta");
+	useEffect(() => {
+		const getUsers = async () => {
+			try {
+				const response = await axios.get(
+					"http://13.233.124.175:8090/crm/user/getAllUsers"
+				);
+				setUserData(response.data.response);
+			} catch (error) {
+				console.error("Error fetching data:", error?.response?.data?.response);
+				alert(error?.response?.data?.response);
+			}
+		};
+		getUsers();
+	}, []);
+	console.log("userData", userData);
 	const handleSave = async () => {
 		try {
-			console.log("lead data : ", leadData);
+			const updateLead = {
+				firstName,
+				lastName,
+				mobileNbr,
+				email,
+				course,
+				source,
+				branch,
+				city,
+				// college,
+				userId,
+				yearOfPassing,
+			};
+			console.log("update lead", updateLead);
 			const response = await axios.post(
 				"http://13.127.184.9:8090/crm/lead/createLead",
-				newLeadData
+				updateLead
 			);
 			console.log(response.data);
 			alert("Lead updated successfully");
@@ -37,6 +59,10 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 		}
 	};
 
+	const handleSelectExecutive = (e) => {
+		console.log("event", e.target.value);
+		setUserId(e.target.value);
+	};
 	return (
 		<div className="fixed top-0 left-0 bg-black bg-opacity-50 w-full h-full flex justify-center items-center">
 			<div className="bg-white flex relative justify-between p-10 w-[50%] h-[80%] rounded-lg">
@@ -51,8 +77,8 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="firstName"
 							type="text"
-							value={newLeadData.firstName}
-							onChange={handleChange}
+							value={firstName}
+							onChange={(e) => setFirstName(e.target.value)}
 							placeholder="first name"
 						/>
 					</div>
@@ -67,8 +93,8 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="email"
 							type="Email"
-							value={newLeadData.email}
-							onChange={handleChange}
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 							placeholder="yourmail@gmail.com"
 						/>
 					</div>
@@ -83,8 +109,8 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="course"
 							type="text"
-							value={newLeadData.course}
-							onChange={handleChange}
+							value={course}
+							onChange={(e) => setCourse(e.target.value)}
 							placeholder="course"
 						/>
 					</div>
@@ -98,8 +124,8 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="city"
 							type="text"
-							value={newLeadData.city}
-							onChange={handleChange}
+							value={city}
+							onChange={(e) => setCity(e.target.value)}
 							placeholder="city"
 						/>
 					</div>
@@ -120,8 +146,8 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="lastName"
 							type="text"
-							value={newLeadData.lastName}
-							onChange={handleChange}
+							value={lastName}
+							onChange={(e) => setLastName(e.target.value)}
 							placeholder="Last Name"
 						/>
 					</div>
@@ -136,12 +162,12 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="mobileNbr"
 							type="number"
-							value={newLeadData.mobileNbr}
-							onChange={handleChange}
+							value={mobileNbr}
+							onChange={(e) => setMobileNbr(e.target.value)}
 							placeholder="mobile number"
 						/>
 					</div>
-					<div className=" w-full flex justify-between">
+					{/* <div className=" w-full flex justify-between">
 						<label
 							className="text-sm"
 							htmlFor="college">
@@ -151,11 +177,11 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
 							id="college"
 							type="text"
-							value={newLeadData.college}
-							onChange={handleChange}
+							value={college}
+							onChange={(e) => setCollege(e.target.value)}
 							placeholder="College"
 						/>
-					</div>
+					</div> */}
 					<div className=" w-full flex justify-between">
 						<label
 							className="text-sm"
@@ -163,11 +189,19 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 							Select Executive
 						</label>
 						<select
-							onChange={handleChange}
+							onChange={handleSelectExecutive}
 							id="selectExecutive">
-							<option value="">ex 1</option>
-							<option value="">ex 2</option>
-							<option value="">ex 3</option>
+							<option value="">Select Executive</option>
+							{userData.map((data) => {
+								console.log("dataaaaa", data);
+								return (
+									<option
+										key={data.userId}
+										value={data.userId}>
+										{data.firstName}
+									</option>
+								);
+							})}
 						</select>
 					</div>
 				</div>
@@ -181,4 +215,4 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 	);
 };
 
-export default AddLeadModel;
+export default EditLeadModel;

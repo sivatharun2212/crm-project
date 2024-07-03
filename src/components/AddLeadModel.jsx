@@ -1,16 +1,18 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const AddLeadModel = ({ closeModel }) => {
 	const [leadData, setLeadData] = useState({
 		firstName: "",
 		lastName: "",
 		email: "",
-		mobile: "",
+		mobileNbr: "",
 		course: "",
-		state: "",
+		college: "",
 		city: "",
 		executive: "",
 	});
+
 	const handleChange = (e) => {
 		const { id, value } = e.target;
 		setLeadData((prevData) => ({
@@ -18,6 +20,21 @@ const AddLeadModel = ({ closeModel }) => {
 			[id]: value,
 		}));
 		console.log("lead data : ", leadData);
+	};
+
+	const handleSave = async () => {
+		try {
+			console.log("lead data : ", leadData);
+			const response = await axios.post(
+				"http://localhost:8090/crm/lead/createLead",
+				leadData
+			);
+			console.log(response.data);
+			alert("Lead added successfully")
+		} catch (error) {
+			console.error("Error fetching data:", error?.response?.data?.response);
+			alert(error?.response?.data?.response);
+		}
 	};
 
 	return (
@@ -112,31 +129,31 @@ const AddLeadModel = ({ closeModel }) => {
 					<div className=" w-full flex justify-between">
 						<label
 							className="text-sm"
-							htmlFor="mobile">
-							Mobile
+							htmlFor="mobileNbr">
+							Mobile Nbr
 						</label>
 						<input
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
-							id="mobile"
-							type="number"
-							value={leadData.mobile}
+							id="mobileNbr"
+							type="text"
+							value={leadData.mobileNbr}
 							onChange={handleChange}
-							placeholder="mobile number"
+							placeholder="Mobile number"
 						/>
 					</div>
 					<div className=" w-full flex justify-between">
 						<label
 							className="text-sm"
-							htmlFor="state">
-							State
+							htmlFor="college">
+							College
 						</label>
 						<input
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
-							id="state"
+							id="college"
 							type="text"
-							value={leadData.state}
+							value={leadData.college}
 							onChange={handleChange}
-							placeholder="State"
+							placeholder="College"
 						/>
 					</div>
 					<div className=" w-full flex justify-between">
@@ -154,9 +171,10 @@ const AddLeadModel = ({ closeModel }) => {
 						</select>
 					</div>
 				</div>
-				<div className="bg-[#216ce7] absolute right-12 px-4 rounded-sm text-white font-semibold cursor-pointer hover:bg-blue-500 bottom-6">
-					Save
-				</div>
+				<button	onClick={handleSave}
+				className="bg-[#216ce7] absolute right-12 px-4 rounded-sm text-white font-semibold cursor-pointer hover:bg-blue-500 bottom-6">
+				Save
+			    </button>
 			</div>
 		</div>
 	);

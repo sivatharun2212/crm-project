@@ -3,8 +3,14 @@ import HeaderSidebar from "../components/HeaderSidebar";
 import AddLeadModel from "../components/AddLeadModel";
 import axios from "axios";
 import EditLeadModel from "../components/EditLeadModel";
+import { useSelector } from "react-redux";
+import searchIcon from "../assets/search.png";
 
 const Leads = () => {
+	// const base_url = process.env.REACT_APP_BASE_URL;
+	// console.log("baseurl", base_url);
+	const sidebarState = useSelector((state) => state.sidebarOpen);
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [recordsPerPage, setRecordsPerPage] = useState(5);
 	const [showAddLeadModel, setShowAddLeadModel] = useState(false);
@@ -14,6 +20,17 @@ const Leads = () => {
 	const [userDate, setUserData] = useState([]);
 	const [leadChecked, setLeadChecked] = useState(false);
 	const [isAssignPopupOpened, setIsAssignPopupOpened] = useState(false);
+
+	const [page, setpage] = useState(0);
+	const [size, setSize] = useState(20);
+	const [sortBy, setSortBy] = useState("firstName");
+	const [sortType, setSortType] = useState("asc");
+	const [userId, setUserId] = useState(null);
+	const [statusId, setStatusId] = useState(null);
+	const [search, setSearch] = useState(null);
+	const [fromDate, setFromDate] = useState(null);
+	const [toDate, setToDate] = useState(null);
+
 	// const totalPages = Math.ceil(data.customersData.length / recordsPerPage);
 
 	const handleImportFileChange = async (event) => {
@@ -22,7 +39,7 @@ const Leads = () => {
 		formData.append("file", file);
 		try {
 			const response = await axios.post(
-				"http://13.127.184.9:8090/crm/lead/bulkUpload",
+				"http://13.233.124.175:8090/crm/lead/bulkUpload",
 				formData,
 				{
 					headers: {
@@ -54,7 +71,7 @@ const Leads = () => {
 		const getUsers = async () => {
 			try {
 				const response = await axios.get(
-					"http://13.127.184.9:8090/crm/user/getAllUsers"
+					"http://13.233.124.175:8090/crm/user/getAllUsers"
 				);
 				setUserData(response.data.response);
 			} catch (error) {
@@ -65,38 +82,46 @@ const Leads = () => {
 		getUsers();
 	}, []);
 
-	useEffect(() => {
-		const handleSearchLead = async () => {
-			try {
-				const searchLeads = {
-					page: 0,
-					size: 20,
-					sortBy: "firstName",
-					sortType: "asc",
-					userId: null,
-					statusId: null,
-					source: null,
-					search: null,
-					fromDate: null,
-					toDate: null,
-				};
-				const response = await axios.post(
-					"http://13.127.184.9:8090/crm/lead/searchLeads",
-					searchLeads
-				);
-				setLaedsData(response.data.response.content);
-			} catch (error) {
-				console.error("Error fetching data:", error?.response?.data?.response);
-				alert(error?.response?.data?.response);
-			}
+	const handleSearchLead = async () => {
+		const searchLeads = {
+			page,
+			size,
+			sortBy,
+			sortType,
+			userId,
+			statusId,
+			search,
+			fromDate,
+			toDate,
 		};
+		try {
+			const response = await axios.post(
+				"http://13.233.124.175:8090/crm/lead/searchLeads",
+				searchLeads
+			);
+			setLaedsData(response.data.response.content);
+		} catch (error) {
+			console.error("Error fetching data:", error?.response?.data?.response);
+			alert(error?.response?.data?.response);
+		}
+	};
+	useEffect(() => {
 		handleSearchLead();
-	}, []);
+	}, [userId]);
+
+	const handleSelectExecutive = (e) => {
+		if (e.target.value === "") {
+			setUserId(null);
+		} else {
+			setUserId(e.target.value);
+		}
+	};
 
 	return (
 		<div className="h-screen w-screen">
 			<HeaderSidebar />
-			<section className="w-full px-4 h-[90%] flex flex-col gap-6 bg-[rgb(241,241,240)]">
+			<section
+				className={`w-full px-4 h-[90%] flex flex-col gap-6 bg-[rgb(241,241,240)]`}>
 				<div className="py-4 flex justify-between">
 					<h1 className="font-bold  text-2xl">Leads</h1>
 					<div className="flex gap-12">
@@ -150,24 +175,43 @@ const Leads = () => {
 						<option value="1">Active</option>
 						<option value="2">In Active</option>
 					</select>
-					<select className="w-40 outline-none  rounded-md">
+					<select
+						id="source"
+						className="w-40 outline-none  rounded-md">
 						<option value="">Select Source</option>
 						<option value="1">Collected data</option>
 						<option value="2">Data</option>
 						<option value="3">YouTube</option>
 						<option value="4">Face book</option>
 					</select>
-					<select className="w-40 outline-none  rounded-md">
+					<select
+						id="userId"
+						onChange={handleSelectExecutive}
+						className="w-40 outline-none  rounded-md">
 						<option value="">Select Executive</option>
 						{userDate.map((data) => (
-							<option key={data.userId}>{data.firstName}</option>
+							<option
+								key={data.userId}
+								value={data.userId}>
+								{data.firstName}
+							</option>
 						))}
 					</select>
-					<input
-						type="text"
-						className="w-40 outline-none  rounded-md pl-2"
-						placeholder="search"
-					/>
+					<div className="flex gap-2 items-center">
+						<input
+							id="search"
+							type="text"
+							className="w-40 outline-none  rounded-md pl-2"
+							placeholder="search"
+							onChange={(e) => setSearch(e.target.value)}
+						/>
+						<img
+							onClick={handleSearchLead}
+							className="w-4 h-4"
+							src={searchIcon}
+							alt="search"
+						/>
+					</div>
 				</div>
 				<div className="rounded-lg overflow-hidden overflow-y-scroll h-[60%]">
 					<table className="w-full text-sm text-left rtl:text-right  text-stone-800 ">

@@ -1,7 +1,9 @@
 import React from "react";
 import menuIcon from "../assets/menuIcon.png";
+import { useDispatch } from "react-redux";
 
 const Header = ({ menuStatus, toggleMenu }) => {
+	const dispatch = useDispatch();
 	const handleMenu = () => {
 		toggleMenu(!menuStatus);
 	};

@@ -12,25 +12,28 @@ const Leads = () => {
 	const [leadsData, setLaedsData] = useState([]);
 	const [editLeadData, setEditLeadData] = useState(null);
 	const [userDate, setUserData] = useState([]);
-
+	const [leadChecked, setLeadChecked] = useState(false);
+	const [isAssignPopupOpened, setIsAssignPopupOpened] = useState(false);
 	// const totalPages = Math.ceil(data.customersData.length / recordsPerPage);
 
 	const handleImportFileChange = async (event) => {
 		const file = event.target.files[0];
 		const formData = new FormData();
-		formData.append('file', file);
+		formData.append("file", file);
 		try {
-		const response = await axios.post(
-			"http://localhost:8090/crm/lead/bulkUpload", formData, {
-				headers: {
-				  'Content-Type': 'multipart/form-data',
-				},
-			  });
-			  alert("Uploaded successfully");
-			} catch (error) {
-				alert(error?.response?.data?.response);
-			}
-
+			const response = await axios.post(
+				"http://13.127.184.9:8090/crm/lead/bulkUpload",
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
+			alert("Uploaded successfully");
+		} catch (error) {
+			alert(error?.response?.data?.response);
+		}
 	};
 	const handleCloseModel = () => {
 		setShowEditLeadModel(false);
@@ -42,10 +45,17 @@ const Leads = () => {
 		setEditLeadData(lead);
 	};
 
-	useEffect( () => {
+	const handleSelectCheckBox = (e, leadid) => {
+		const isChecked = e.target.checked;
+		setLeadChecked(isChecked);
+	};
+
+	useEffect(() => {
 		const getUsers = async () => {
 			try {
-				const response = await axios.get("http://localhost:8090/crm/user/getAllUsers");
+				const response = await axios.get(
+					"http://13.127.184.9:8090/crm/user/getAllUsers"
+				);
 				setUserData(response.data.response);
 			} catch (error) {
 				console.error("Error fetching data:", error?.response?.data?.response);
@@ -71,7 +81,7 @@ const Leads = () => {
 					toDate: null,
 				};
 				const response = await axios.post(
-					"http://localhost:8090/crm/lead/searchLeads",
+					"http://13.127.184.9:8090/crm/lead/searchLeads",
 					searchLeads
 				);
 				setLaedsData(response.data.response.content);
@@ -88,8 +98,35 @@ const Leads = () => {
 			<HeaderSidebar />
 			<section className="w-full px-4 h-[90%] flex flex-col gap-6 bg-[rgb(241,241,240)]">
 				<div className="py-4 flex justify-between">
-					<h1 className="font-bold text-2xl">Leads</h1>
+					<h1 className="font-bold  text-2xl">Leads</h1>
 					<div className="flex gap-12">
+						{leadChecked && (
+							<div
+								onClick={() =>
+									setIsAssignPopupOpened(!isAssignPopupOpened)
+								}
+								className="bg-[#216ce7] relative px-2 flex justify-center items-center rounded-md cursor-pointer text-white ">
+								Assign
+								{isAssignPopupOpened && (
+									<div
+										onClick={(e) => e.stopPropagation()}
+										className="w-80 h-24 bg-white shadow-lg absolute -bottom-28 rounded-md p-6 flex flex-col justify-between">
+										<label
+											className="text-sm text-stone-800"
+											htmlFor="selectExecutive">
+											Select Executive
+										</label>
+										<select
+											className="rounded-sm bg-slate-200 text-stone-800"
+											id="selectExecutive">
+											<option value="">ex 1</option>
+											<option value="">ex 2</option>
+											<option value="">ex 3</option>
+										</select>
+									</div>
+								)}
+							</div>
+						)}
 						<label
 							htmlFor="import"
 							className="bg-[#216ce7] cursor-pointer px-2 flex justify-center items-center rounded-md text-white ">
@@ -101,11 +138,11 @@ const Leads = () => {
 							id="import"
 							className="hidden"
 						/>
-						<span
+						<div
 							onClick={() => setShowAddLeadModel(true)}
 							className="bg-[#216ce7] px-2 flex justify-center items-center rounded-md cursor-pointer text-white ">
 							Add lead
-						</span>
+						</div>
 					</div>
 				</div>
 				<div className="flex gap-10">
@@ -123,8 +160,8 @@ const Leads = () => {
 					<select className="w-40 outline-none  rounded-md">
 						<option value="">Select Executive</option>
 						{userDate.map((data) => (
-                        <option key={data.userId}>{data.firstName}</option>
-                    ))}
+							<option key={data.userId}>{data.firstName}</option>
+						))}
 					</select>
 					<input
 						type="text"
@@ -138,8 +175,14 @@ const Leads = () => {
 							<tr>
 								<th
 									scope="col"
-									className="px-6 py-3">
-									Customers
+									className="px-6 py-3 flex gap-4">
+									<input
+										type="checkbox"
+										onChange={(e) =>
+											handleSelectCheckBox(e, "a")
+										}
+									/>
+									<span>Customers</span>
 								</th>
 								<th
 									scope="col"
@@ -187,11 +230,17 @@ const Leads = () => {
 										<td
 											scope="row"
 											className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-											<div className="customer-heading">
+											<div className="flex gap-4">
 												<input
 													type="checkbox"
 													name=""
 													id=""
+													onChange={(e) =>
+														handleSelectCheckBox(
+															e,
+															lead.leadId
+														)
+													}
 												/>
 												{/* <img
 											class="table-star"

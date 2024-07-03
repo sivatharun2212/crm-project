@@ -9,7 +9,7 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 		email: leadData.email,
 		mobileNbr: leadData.mobileNbr,
 		course: leadData.enquiredCourse,
-		state: leadData.state,
+		college: leadData.state,
 		city: leadData.city,
 		// executive: leadData.ex,
 	});
@@ -19,17 +19,18 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 			...prevData,
 			[id]: value,
 		}));
+		console.log("new lead data => ", newLeadData);
 	};
 
 	const handleSave = async () => {
 		try {
 			console.log("lead data : ", leadData);
 			const response = await axios.post(
-				"http://localhost:8090/crm/lead/createLead",
-				leadData
+				"http://13.127.184.9:8090/crm/lead/createLead",
+				newLeadData
 			);
 			console.log(response.data);
-			alert("Lead updated successfully")
+			alert("Lead updated successfully");
 		} catch (error) {
 			console.error("Error fetching data:", error?.response?.data?.response);
 			alert(error?.response?.data?.response);
@@ -133,7 +134,7 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 						</label>
 						<input
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
-							id="mobile"
+							id="mobileNbr"
 							type="number"
 							value={newLeadData.mobileNbr}
 							onChange={handleChange}
@@ -143,16 +144,16 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 					<div className=" w-full flex justify-between">
 						<label
 							className="text-sm"
-							htmlFor="state">
-							State
+							htmlFor="college">
+							College
 						</label>
 						<input
 							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
-							id="city"
+							id="college"
 							type="text"
-							value={newLeadData.city}
+							value={newLeadData.college}
 							onChange={handleChange}
-							placeholder="City"
+							placeholder="College"
 						/>
 					</div>
 					<div className=" w-full flex justify-between">
@@ -170,10 +171,11 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 						</select>
 					</div>
 				</div>
-				<button	onClick={handleSave}
-				className="bg-[#216ce7] absolute right-12 px-4 rounded-sm text-white font-semibold cursor-pointer hover:bg-blue-500 bottom-6">
-				Save
-			    </button>
+				<button
+					onClick={handleSave}
+					className="bg-[#216ce7] absolute right-12 px-4 rounded-sm text-white font-semibold cursor-pointer hover:bg-blue-500 bottom-6">
+					Save
+				</button>
 			</div>
 		</div>
 	);

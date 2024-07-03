@@ -26,11 +26,11 @@ const AddLeadModel = ({ closeModel }) => {
 		try {
 			console.log("lead data : ", leadData);
 			const response = await axios.post(
-				"http://localhost:8090/crm/lead/createLead",
+				"http://13.127.184.9:8090/crm/lead/createLead",
 				leadData
 			);
 			console.log(response.data);
-			alert("Lead added successfully")
+			alert("Lead added successfully");
 		} catch (error) {
 			console.error("Error fetching data:", error?.response?.data?.response);
 			alert(error?.response?.data?.response);
@@ -171,10 +171,11 @@ const AddLeadModel = ({ closeModel }) => {
 						</select>
 					</div>
 				</div>
-				<button	onClick={handleSave}
-				className="bg-[#216ce7] absolute right-12 px-4 rounded-sm text-white font-semibold cursor-pointer hover:bg-blue-500 bottom-6">
-				Save
-			    </button>
+				<button
+					onClick={handleSave}
+					className="bg-[#216ce7] absolute right-12 px-4 rounded-sm text-white font-semibold cursor-pointer hover:bg-blue-500 bottom-6">
+					Save
+				</button>
 			</div>
 		</div>
 	);

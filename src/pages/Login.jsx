@@ -11,7 +11,7 @@ const Login = () => {
 		try {
 			const loginReq = { mobileNbr: userName, password: password };
 			const response = await axios.post(
-				"http://localhost:8090/crm/auth/login",
+				"http://13.127.184.9:8090/crm/auth/login",
 				loginReq
 			);
 			console.log(response.data);

@@ -18,7 +18,6 @@ const AddLeadModel = ({ leadData, closeModel }) => {
 			...prevData,
 			[id]: value,
 		}));
-		console.log("chaedValues", newLeadData);
 	};
 
 	return (

@@ -7,8 +7,7 @@ import { useSelector } from "react-redux";
 import searchIcon from "../assets/search.png";
 
 const Leads = () => {
-	// const base_url = process.env.REACT_APP_BASE_URL;
-	// console.log("baseurl", base_url);
+	const baseURL = process.env.REACT_APP_BASE_URL;
 	const sidebarState = useSelector((state) => state.sidebarOpen);
 
 	const [currentPage, setCurrentPage] = useState(1);
@@ -32,21 +31,16 @@ const Leads = () => {
 	const [toDate, setToDate] = useState(null);
 
 	// const totalPages = Math.ceil(data.customersData.length / recordsPerPage);
-
 	const handleImportFileChange = async (event) => {
 		const file = event.target.files[0];
 		const formData = new FormData();
 		formData.append("file", file);
 		try {
-			const response = await axios.post(
-				"http://13.233.124.175:8090/crm/lead/bulkUpload",
-				formData,
-				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			);
+			const response = await axios.post(`${baseURL}/lead/bulkUpload`, formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			});
 			alert("Uploaded successfully");
 		} catch (error) {
 			alert(error?.response?.data?.response);
@@ -70,9 +64,7 @@ const Leads = () => {
 	useEffect(() => {
 		const getUsers = async () => {
 			try {
-				const response = await axios.get(
-					"http://13.233.124.175:8090/crm/user/getAllUsers"
-				);
+				const response = await axios.get(`${baseURL}/user/getAllUsers`);
 				setUserData(response.data.response);
 			} catch (error) {
 				console.error("Error fetching data:", error?.response?.data?.response);
@@ -95,10 +87,7 @@ const Leads = () => {
 			toDate,
 		};
 		try {
-			const response = await axios.post(
-				"http://13.233.124.175:8090/crm/lead/searchLeads",
-				searchLeads
-			);
+			const response = await axios.post(`${baseURL}/lead/searchLeads`, searchLeads);
 			setLaedsData(response.data.response.content);
 		} catch (error) {
 			console.error("Error fetching data:", error?.response?.data?.response);
@@ -121,7 +110,9 @@ const Leads = () => {
 		<div className="h-screen w-screen">
 			<HeaderSidebar />
 			<section
-				className={`w-full px-4 h-[90%] flex flex-col gap-6 bg-[rgb(241,241,240)]`}>
+				className={`${
+					sidebarState.sidebarIsOpen ? "w-[88%]" : "w-full"
+				} px-4 h-[90%] absolute right-0 flex flex-col gap-6 bg-[rgb(241,241,240)]`}>
 				<div className="py-4 flex justify-between">
 					<h1 className="font-bold  text-2xl">Leads</h1>
 					<div className="flex gap-12">

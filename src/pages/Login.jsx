@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { saveAuthInfo } from "../features/authInfo";
+import { useDispatch } from "react-redux";
+// console.log(response.data.response.access[0].roleName);
 const Login = () => {
+	const baseURL = process.env.REACT_APP_BASE_URL;
+
 	const navigate = useNavigate();
 	const [userName, setUserName] = useState("");
 	const [password, setPassword] = useState("");
@@ -10,11 +14,8 @@ const Login = () => {
 	const handleLogin = async () => {
 		try {
 			const loginReq = { mobileNbr: userName, password: password };
-			const response = await axios.post(
-				"http://13.233.124.175:8090/crm/auth/login",
-				loginReq
-			);
-			console.log(response.data);
+			const response = await axios.post(`${baseURL}/auth/login`, loginReq);
+			console.log(response.data.response);
 			navigate("/home");
 		} catch (error) {
 			console.error("Error fetching data:", error?.response?.data?.response);

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const EditLeadModel = ({ leadData, closeModel }) => {
+	const baseURL = process.env.REACT_APP_BASE_URL;
+
 	const [firstName, setFirstName] = useState(leadData.firstName);
 	const [lastName, setLastName] = useState(leadData.lastName);
 	const [mobileNbr, setMobileNbr] = useState(leadData.mobileNbr);
@@ -19,9 +21,7 @@ const EditLeadModel = ({ leadData, closeModel }) => {
 	useEffect(() => {
 		const getUsers = async () => {
 			try {
-				const response = await axios.get(
-					"http://13.233.124.175:8090/crm/user/getAllUsers"
-				);
+				const response = await axios.get(`${baseURL}/user/getAllUsers`);
 				setUserData(response.data.response);
 			} catch (error) {
 				console.error("Error fetching data:", error?.response?.data?.response);
@@ -47,10 +47,7 @@ const EditLeadModel = ({ leadData, closeModel }) => {
 				yearOfPassing,
 			};
 			console.log("update lead", updateLead);
-			const response = await axios.post(
-				"http://13.127.184.9:8090/crm/lead/createLead",
-				updateLead
-			);
+			const response = await axios.post(`${baseURL}/lead/createLead`, updateLead);
 			console.log(response.data);
 			alert("Lead updated successfully");
 		} catch (error) {

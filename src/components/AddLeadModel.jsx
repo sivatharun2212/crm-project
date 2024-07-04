@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const AddLeadModel = ({ closeModel }) => {
+	const baseURL = process.env.REACT_APP_BASE_URL;
+
 	const [leadData, setLeadData] = useState({
 		firstName: "",
 		lastName: "",
@@ -25,10 +27,7 @@ const AddLeadModel = ({ closeModel }) => {
 	const handleSave = async () => {
 		try {
 			console.log("lead data : ", leadData);
-			const response = await axios.post(
-				"http://13.127.184.9:8090/crm/lead/createLead",
-				leadData
-			);
+			const response = await axios.post(`${baseURL}/lead/createLead`, leadData);
 			console.log(response.data);
 			alert("Lead added successfully");
 		} catch (error) {

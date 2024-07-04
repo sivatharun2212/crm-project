@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const AddLeadModel = ({ closeModel }) => {
 	const baseURL = process.env.REACT_APP_BASE_URL;
 
 	const [leadData, setLeadData] = useState({
-		firstName: "",
-		lastName: "",
-		email: "",
-		mobileNbr: "",
-		course: "",
-		college: "",
-		city: "",
-		executive: "",
+		firstName: null,
+		lastName: null,
+		email: null,
+		mobileNbr: null,
+		course: null,
+		college: null,
+		city: null,
+		executive: null,
 	});
+	const [userData, setUserData] = useState([]);
 
 	const handleChange = (e) => {
 		const { id, value } = e.target;
@@ -23,6 +24,19 @@ const AddLeadModel = ({ closeModel }) => {
 		}));
 		console.log("lead data : ", leadData);
 	};
+
+	useEffect(() => {
+		const getUsers = async () => {
+			try {
+				const response = await axios.get(`${baseURL}/user/getAllUsers`);
+				setUserData(response.data.response);
+			} catch (error) {
+				console.error("Error fetching data:", error?.response?.data?.response);
+				alert(error?.response?.data?.response);
+			}
+		};
+		getUsers();
+	}, []);
 
 	const handleSave = async () => {
 		try {
@@ -163,10 +177,17 @@ const AddLeadModel = ({ closeModel }) => {
 						</label>
 						<select
 							onChange={handleChange}
-							id="selectExecutive">
-							<option value="">ex 1</option>
-							<option value="">ex 2</option>
-							<option value="">ex 3</option>
+							id="userId">
+							<option value="">Select Executive</option>
+							{userData.map((data) => {
+								return (
+									<option
+										key={data.userId}
+										value={data.userId}>
+										{data.firstName}
+									</option>
+								);
+							})}
 						</select>
 					</div>
 				</div>

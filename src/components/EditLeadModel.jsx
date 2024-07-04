@@ -15,6 +15,7 @@ const EditLeadModel = ({ leadData, closeModel }) => {
 	const [yearOfPassing, setYearOfPassing] = useState(leadData.yearOfPassing);
 	const [city, setCity] = useState(leadData.city);
 	const [userId, setUserId] = useState(leadData.user?.userId);
+	const [leadId, setLeadId] = useState(leadData?.leadId);
 
 	const [userData, setUserData] = useState([]);
 	console.log("useradta");
@@ -43,7 +44,10 @@ const EditLeadModel = ({ leadData, closeModel }) => {
 				branch,
 				city,
 				// college,
-				userId,
+				user: {
+					userId: userId,
+				},
+				leadId,
 				yearOfPassing,
 			};
 			console.log("update lead", updateLead);

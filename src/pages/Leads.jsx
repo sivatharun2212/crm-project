@@ -9,16 +9,21 @@ import searchIcon from "../assets/search.png";
 const Leads = () => {
 	const baseURL = process.env.REACT_APP_BASE_URL;
 	const sidebarState = useSelector((state) => state.sidebarOpen);
+	const authInfoState = useSelector((state) => state.authInfo);
 
+	console.log("authInfoState", authInfoState);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [recordsPerPage, setRecordsPerPage] = useState(5);
 	const [showAddLeadModel, setShowAddLeadModel] = useState(false);
 	const [showEditLeadModel, setShowEditLeadModel] = useState(false);
 	const [leadsData, setLaedsData] = useState([]);
 	const [editLeadData, setEditLeadData] = useState(null);
-	const [userDate, setUserData] = useState([]);
+	const [userData, setUserData] = useState([]);
 	const [leadChecked, setLeadChecked] = useState(false);
+	const [selectedLeads, setSelectedLeads] = useState({});
 	const [isAssignPopupOpened, setIsAssignPopupOpened] = useState(false);
+	const [isExecutiveRole, setIsExecutiveRole] = useState(false);
+	const [isAllCheckboxesSelected, setIsAllCheckboxesSelected] = useState(false);
 
 	const [page, setpage] = useState(0);
 	const [size, setSize] = useState(20);
@@ -30,6 +35,17 @@ const Leads = () => {
 	const [fromDate, setFromDate] = useState(null);
 	const [toDate, setToDate] = useState(null);
 
+	useEffect(() => {
+		console.log("selected leads", selectedLeads);
+	}, [selectedLeads]);
+	useEffect(() => {
+		const roleName = authInfoState.access[0].roleName;
+		if (roleName === "executive") {
+			setIsExecutiveRole(true);
+		} else {
+			setIsExecutiveRole(false);
+		}
+	}, [authInfoState]);
 	// const totalPages = Math.ceil(data.customersData.length / recordsPerPage);
 	const handleImportFileChange = async (event) => {
 		const file = event.target.files[0];
@@ -57,8 +73,14 @@ const Leads = () => {
 	};
 
 	const handleSelectCheckBox = (e, leadid) => {
-		const isChecked = e.target.checked;
-		setLeadChecked(isChecked);
+		console.log("leadId => ", leadid);
+		if (leadid === "a") {
+			setIsAllCheckboxesSelected(e.target.checked);
+		}
+		setSelectedLeads((prevState) => ({
+			...prevState,
+			[leadid]: e.target.checked,
+		}));
 	};
 
 	useEffect(() => {
@@ -73,6 +95,20 @@ const Leads = () => {
 		};
 		getUsers();
 	}, []);
+
+	useEffect(() => {
+		const checkIfAnyTrue = () => {
+			for (let key in selectedLeads) {
+				if (selectedLeads[key] === true) {
+					setLeadChecked(true);
+					return;
+				}
+			}
+			setLeadChecked(false);
+		};
+
+		checkIfAnyTrue();
+	}, [selectedLeads]);
 
 	const handleSearchLead = async () => {
 		const searchLeads = {
@@ -116,7 +152,7 @@ const Leads = () => {
 				<div className="py-4 flex justify-between">
 					<h1 className="font-bold  text-2xl">Leads</h1>
 					<div className="flex gap-12">
-						{leadChecked && (
+						{leadChecked && !isExecutiveRole && (
 							<div
 								onClick={() =>
 									setIsAssignPopupOpened(!isAssignPopupOpened)
@@ -134,31 +170,48 @@ const Leads = () => {
 										</label>
 										<select
 											className="rounded-sm bg-slate-200 text-stone-800"
-											id="selectExecutive">
-											<option value="">ex 1</option>
-											<option value="">ex 2</option>
-											<option value="">ex 3</option>
+											id="userId">
+											<option value="">
+												Select Executive
+											</option>
+											{userData.map((data) => {
+												return (
+													<option
+														key={
+															data.userId
+														}
+														value={
+															data.userId
+														}>
+														{data.firstName}
+													</option>
+												);
+											})}
 										</select>
 									</div>
 								)}
 							</div>
 						)}
-						<label
-							htmlFor="import"
-							className="bg-[#216ce7] cursor-pointer px-2 flex justify-center items-center rounded-md text-white ">
-							Import
-						</label>
-						<input
-							onChange={handleImportFileChange}
-							type="file"
-							id="import"
-							className="hidden"
-						/>
-						<div
-							onClick={() => setShowAddLeadModel(true)}
-							className="bg-[#216ce7] px-2 flex justify-center items-center rounded-md cursor-pointer text-white ">
-							Add lead
-						</div>
+						{!isExecutiveRole && (
+							<>
+								<label
+									htmlFor="import"
+									className="bg-[#216ce7] cursor-pointer px-2 flex justify-center items-center rounded-md text-white ">
+									Import
+								</label>
+								<input
+									onChange={handleImportFileChange}
+									type="file"
+									id="import"
+									className="hidden"
+								/>
+								<div
+									onClick={() => setShowAddLeadModel(true)}
+									className="bg-[#216ce7] px-2 flex justify-center items-center rounded-md cursor-pointer text-white ">
+									Add lead
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 				<div className="flex gap-10">
@@ -180,7 +233,7 @@ const Leads = () => {
 						onChange={handleSelectExecutive}
 						className="w-40 outline-none  rounded-md">
 						<option value="">Select Executive</option>
-						{userDate.map((data) => (
+						{userData.map((data) => (
 							<option
 								key={data.userId}
 								value={data.userId}>
@@ -260,7 +313,7 @@ const Leads = () => {
 							{leadsData.map((lead) => {
 								return (
 									<tr
-										key={lead?.firstName}
+										key={lead?.leadId}
 										className="bg-gray-200 border-b  hover:bg-gray-50">
 										<td
 											scope="row"

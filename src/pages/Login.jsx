@@ -8,6 +8,7 @@ const Login = () => {
 	const baseURL = process.env.REACT_APP_BASE_URL;
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [userName, setUserName] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -15,7 +16,8 @@ const Login = () => {
 		try {
 			const loginReq = { mobileNbr: userName, password: password };
 			const response = await axios.post(`${baseURL}/auth/login`, loginReq);
-			console.log(response.data.response);
+			console.log("response from login", response.data.response);
+			dispatch(saveAuthInfo(response.data.response));
 			navigate("/home");
 		} catch (error) {
 			console.error("Error fetching data:", error?.response?.data?.response);

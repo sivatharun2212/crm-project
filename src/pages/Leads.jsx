@@ -24,6 +24,7 @@ const Leads = () => {
 	const [isAssignPopupOpened, setIsAssignPopupOpened] = useState(false);
 	const [isExecutiveRole, setIsExecutiveRole] = useState(false);
 	const [isAllCheckboxesSelected, setIsAllCheckboxesSelected] = useState(false);
+	const [chooseYearActive, setChooseYearActive] = useState(false);
 
 	const [page, setpage] = useState(0);
 	const [size, setSize] = useState(20);
@@ -142,6 +143,14 @@ const Leads = () => {
 		}
 	};
 
+	const handleChooseYear = (e) => {
+		if (e.target.value === "3") {
+			setChooseYearActive(true);
+		} else {
+			setChooseYearActive(false);
+		}
+	};
+
 	return (
 		<div className="h-screen w-screen">
 			<HeaderSidebar />
@@ -219,6 +228,29 @@ const Leads = () => {
 						<option value="1">Active</option>
 						<option value="2">In Active</option>
 					</select>
+					<select
+						onChange={handleChooseYear}
+						className="w-28 outline-none rounded-md">
+						<option value="1">This Month</option>
+						<option value="2">Last Month</option>
+						<option value="3">Fin Year</option>
+						<option value="4">Other </option>
+					</select>
+					{chooseYearActive && (
+						<select
+							onChange={handleChooseYear}
+							className="w-28 outline-none rounded-md">
+							<option value="1">2024-2025</option>
+							<option value="2">2023-2024</option>
+							<option value="3">2022-2023</option>
+							<option value="4">2021-2022</option>
+							<option value="4">2020-2021</option>
+							<option value="4">2019-2020</option>
+							<option value="4">2018-2019</option>
+							<option value="4">2017-2018</option>
+							<option value="4">2016-2017</option>
+						</select>
+					)}
 					<select
 						id="source"
 						className="w-40 outline-none  rounded-md">

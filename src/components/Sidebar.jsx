@@ -4,9 +4,9 @@ import settingsIcon from "../assets/settings.png";
 import downarrowIcon from "../assets/down.png";
 import accountIcon from "../assets/lock.png";
 import createIcon from "../assets/add.png";
+import usersIcon from "../assets/users.png";
 import leadsIcon from "../assets/leads.png";
 import { useSelector } from "react-redux";
-
 import { useNavigate } from "react-router-dom";
 const Sidebar = ({ menuStatus }) => {
 	const authInfoState = useSelector((state) => state.authInfo);
@@ -29,7 +29,7 @@ const Sidebar = ({ menuStatus }) => {
 		<aside
 			className={`${
 				menuStatus ? "flex" : "hidden"
-			} w-40 h-[90%] bg-white flex flex-col gap-2 absolute left-0`}>
+			} w-[12%] h-[90%] bg-white flex flex-col gap-2 absolute left-0`}>
 			{!isExecutiveRole && (
 				<div
 					onClick={() => navigate("/home")}
@@ -53,6 +53,30 @@ const Sidebar = ({ menuStatus }) => {
 					alt=""
 				/>
 				<span className="text-stone-800 text-sm font-medium capitalize">Leads</span>
+			</div>
+			<div
+				onClick={() => navigate("/prospects")}
+				className="flex cursor-pointer  items-center px-6 py-2  gap-4">
+				<img
+					className="w-4 h-4"
+					src={leadsIcon}
+					alt=""
+				/>
+				<span className="text-stone-800 text-sm font-medium capitalize">
+					Prospects
+				</span>
+			</div>
+			<div
+				onClick={() => navigate("/invoices")}
+				className="flex cursor-pointer  items-center px-6 py-2  gap-4">
+				<img
+					className="w-4 h-4"
+					src={leadsIcon}
+					alt=""
+				/>
+				<span className="text-stone-800 text-sm font-medium capitalize">
+					Invoices
+				</span>
 			</div>
 			{!isExecutiveRole && (
 				<>
@@ -160,6 +184,18 @@ const Sidebar = ({ menuStatus }) => {
 							</ul>
 						</div>
 					)}
+					<div
+						onClick={() => navigate("/users")}
+						className="flex cursor-pointer items-center px-6 py-2  gap-4">
+						<img
+							className="w-4 h-4"
+							src={usersIcon}
+							alt=""
+						/>
+						<span className="text-stone-800 text-sm font-medium capitalize">
+							Users
+						</span>
+					</div>
 				</>
 			)}
 		</aside>

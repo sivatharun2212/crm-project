@@ -9,7 +9,7 @@ const Header = ({ menuStatus, toggleMenu }) => {
 		dispatch(toogleSidebar());
 	};
 	return (
-		<header className="w-full h-[8%] flex justify-between items-center px-6 shadow-lg bg-white">
+		<header className="w-full h-[10%] flex justify-between items-center px-6 shadow-lg bg-white">
 			<div>
 				<img
 					className="w-4"

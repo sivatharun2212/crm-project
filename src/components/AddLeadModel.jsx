@@ -53,15 +53,15 @@ const AddLeadModel = ({ closeModel }) => {
 	return (
 		<div className="fixed top-0 left-0 bg-black bg-opacity-50 w-full h-full flex justify-center items-center">
 			<div className="bg-white flex relative justify-between p-10 w-[50%] h-[80%] rounded-lg">
-				<div className="w-[48%] h-[95%] border-2 rounded-md border-black px-4 py-2 flex flex-col gap-10">
-					<div className=" w-full flex justify-between">
+				<div className="w-[48%] h-[95%] rounded-md bg-neutral-200 px-4 py-2 flex flex-col gap-4">
+					<div className=" w-full flex items-center justify-between">
 						<label
 							className="text-sm"
 							htmlFor="firstName">
 							First Name{" "}
 						</label>
 						<input
-							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
+							className="w-40 text-sm h-[25px] rounded-full pl-2 border-2 border-gray-300"
 							id="firstName"
 							type="text"
 							value={leadData.firstName}
@@ -70,14 +70,14 @@ const AddLeadModel = ({ closeModel }) => {
 						/>
 					</div>
 
-					<div className=" w-full flex justify-between">
+					<div className=" w-full flex items-center justify-between">
 						<label
 							className="text-sm"
 							htmlFor="email">
 							Email{" "}
 						</label>
 						<input
-							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
+							className="w-40 text-sm h-[25px] rounded-full pl-2 border-2 border-gray-300"
 							id="email"
 							type="Email"
 							value={leadData.email}
@@ -86,14 +86,14 @@ const AddLeadModel = ({ closeModel }) => {
 						/>
 					</div>
 
-					<div className=" w-full flex justify-between">
+					<div className=" w-full flex items-center justify-between">
 						<label
 							className="text-sm"
 							htmlFor="course">
 							Course{" "}
 						</label>
 						<input
-							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
+							className="w-40 text-sm h-[25px] rounded-full pl-2 border-2 border-gray-300"
 							id="course"
 							type="text"
 							value={leadData.course}
@@ -101,14 +101,14 @@ const AddLeadModel = ({ closeModel }) => {
 							placeholder="course"
 						/>
 					</div>
-					<div className=" w-full flex justify-between">
+					<div className=" w-full flex items-center justify-between">
 						<label
 							className="text-sm"
 							htmlFor="city">
 							City{" "}
 						</label>
 						<input
-							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
+							className="w-40 text-sm h-[25px] rounded-full pl-2 border-2 border-gray-300"
 							id="city"
 							type="text"
 							value={leadData.city}
@@ -117,20 +117,20 @@ const AddLeadModel = ({ closeModel }) => {
 						/>
 					</div>
 				</div>
-				<div className="w-[48%] h-[95%] border-2 rounded-md border-black px-4 py-2 flex flex-col gap-10">
+				<div className="w-[48%] h-[95%] rounded-md bg-neutral-200 px-4 py-2 flex flex-col gap-4">
 					<div
 						onClick={closeModel}
 						className="absolute right-[0.5rem] top-[0.5rem] cursor-pointer hover:bg-gray-400 bg-gray-400 px-2 rounded-md bg-opacity-40 font-bold text-stone-800">
 						X
 					</div>
-					<div className=" w-full flex justify-between">
+					<div className=" w-full flex items-center justify-between">
 						<label
 							className="text-sm"
 							htmlFor="lastName">
 							Last Name{" "}
 						</label>
 						<input
-							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
+							className="w-40 text-sm h-[25px] rounded-full pl-2 border-2 border-gray-300"
 							id="lastName"
 							type="text"
 							value={leadData.lastName}
@@ -139,14 +139,14 @@ const AddLeadModel = ({ closeModel }) => {
 						/>
 					</div>
 
-					<div className=" w-full flex justify-between">
+					<div className=" w-full flex items-center justify-between">
 						<label
 							className="text-sm"
 							htmlFor="mobileNbr">
 							Mobile Nbr
 						</label>
 						<input
-							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
+							className="w-40 text-sm h-[25px] rounded-full pl-2 border-2 border-gray-300"
 							id="mobileNbr"
 							type="text"
 							value={leadData.mobileNbr}
@@ -154,14 +154,14 @@ const AddLeadModel = ({ closeModel }) => {
 							placeholder="Mobile number"
 						/>
 					</div>
-					<div className=" w-full flex justify-between">
+					<div className=" w-full flex items-center justify-between">
 						<label
 							className="text-sm"
 							htmlFor="college">
 							College
 						</label>
 						<input
-							className="w-36 text-sm h-6 rounded-sm pl-2 border-2 border-gray-300"
+							className="w-40 text-sm h-[25px] rounded-full pl-2 border-2 border-gray-300"
 							id="college"
 							type="text"
 							value={leadData.college}
@@ -169,13 +169,14 @@ const AddLeadModel = ({ closeModel }) => {
 							placeholder="College"
 						/>
 					</div>
-					<div className=" w-full flex justify-between">
+					<div className=" w-full flex items-center justify-between">
 						<label
 							className="text-sm"
 							htmlFor="selectExecutive">
 							Select Executive
 						</label>
 						<select
+							className="rounded-full text-sm w-32"
 							onChange={handleChange}
 							id="userId">
 							<option value="">Select Executive</option>
